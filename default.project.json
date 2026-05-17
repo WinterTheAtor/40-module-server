@@ -1,0 +1,55 @@
+{
+  "name": "CatalogBuyerTwo",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$ignoreUnknownInstances": true,
+      "$className": "ReplicatedStorage",
+
+      "Packages": {
+        "$className": "Folder", 
+        "$path": "Packages"
+      },
+
+      "Controllers": {
+        "$className": "Folder",
+        "$path": "src/Client/Controllers"
+      },
+
+      "Modules": {
+        "$className": "Folder",
+        "$path": "src/Client/Modules"
+      }
+    },
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+
+      "Initalize": {
+        "$path": "src/Shared/Bootstrap/Server.server.luau"
+      }
+    },
+
+    "ServerStorage": {
+      "$className": "ServerStorage",
+
+      "Services": {
+        "$className": "Folder",
+        "$path": "src/Server/Services"
+      }
+    },
+
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+
+        "Initalize": {
+          "$path": "src/Shared/Bootstrap/Client.client.luau"
+        }
+      }
+    }
+  }
+}
