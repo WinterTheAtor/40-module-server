@@ -17,6 +17,10 @@ local scope = Fusion.scoped(Fusion, {
 
 function MainController:KnitStart()
 
+    local isActive = scope:Value(false)
+    local TextBoxValue = scope:Value("")
+    local itemdataSent = scope:Value(false)
+
     scope:New "ScreenGui" ({
         Name = "CatalogBuyer";
         ResetOnSpawn = false;
@@ -24,8 +28,8 @@ function MainController:KnitStart()
         Parent = Knit.Player:WaitForChild("PlayerGui");
 
         [Fusion.Children] = {
-            scope:OpenButton();
-            scope:MainContent()
+            scope:OpenButton({isActive = isActive});
+            scope:MainContent({isActive = isActive, TextBoxValue = TextBoxValue, itemdataSent = itemdataSent});
         }
     })
 end

@@ -5,8 +5,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.fusion)
 
 local function renderOpenButton(
-    scope: Fusion.Scope<typeof(Fusion)>
-)
+    scope: Fusion.Scope<typeof(Fusion)>,
+    props: {
+        isActive: Fusion.Value<boolean>
+    }
+): (Fusion.Child)
 
     local isHeldDown = scope:Value(false)
     local isHovering = scope:Value(false)
@@ -15,12 +18,11 @@ local function renderOpenButton(
         Name = "OpenButton";
         AnchorPoint = Vector2.new(.5, .5);
         Position = UDim2.fromScale(.5, .9);
-        Size = UDim2.fromScale(.3, .1);
+        Size = UDim2.fromScale(.1, .1);
         BackgroundTransparency = 1;
-        Image = "";
         
         [Fusion.Children] = {
-            scope:New "UIAspectRatioConstraint" {AspectRatio = 4};
+            scope:New "UIAspectRatioConstraint" {AspectRatio = 1};
             scope:New "UIScale" {Scale = scope:Spring(scope:Computed(function(use)
                 return if use(isHovering) and not use(isHeldDown) then 1.1 elseif use(isHeldDown) then 1 else 1
             end), 30, 1)};
@@ -32,37 +34,26 @@ local function renderOpenButton(
                 Position = scope:Spring(scope:Computed(function(use)
                     return if use(isHovering) then UDim2.fromScale(.5, .45) else UDim2.fromScale(.5, .5)
                 end), 30, 1);
-                BackgroundColor3 = Color3.fromRGB(139, 226, 40);
+                BackgroundColor3 = Color3.fromRGB(10, 10, 10);
+                BackgroundTransparency = 0.2;
 
                 [Fusion.Children] = {
                     scope:New "UICorner" {CornerRadius = UDim.new(.15, 0)};
 
-                    scope:New "TextLabel" ({
-                        Name = "Title";
-                        AnchorPoint = Vector2.new(.5, .5);
-                        Position = UDim2.fromScale(.55, .5);
-                        Size = UDim2.fromScale(.7, .5);
-                        BackgroundTransparency = 1;
-
-                        TextScaled = true;
-                        Font = Enum.Font.FredokaOne;
-                        TextColor3 = Color3.fromRGB(99, 134, 59);
-                        Text = "Catalog Buyer 2.0 (Open Me)";
-
-                        [Fusion.Children] = {
-                            scope:New "UIAspectRatioConstraint" {AspectRatio = 6}
-                        }
-                    });
+                    scope:New "UIStroke" {
+                        Thickness = 4;
+                        Color = Color3.fromRGB(35,35,35);
+                    };
 
                     scope:New "ImageLabel" ({
                         Name = "Icon";
                         AnchorPoint = Vector2.new(.5, .5);
-                        Position = UDim2.fromScale(.15, .5);
-                        Size = UDim2.fromScale(.5, .5);
+                        Position = UDim2.fromScale(.5, .5);
+                        Size = UDim2.fromScale(.6, .6);
                         BackgroundTransparency = 1;
 
                         Image = "http://www.roblox.com/asset/?id=6031265968";
-                        ImageColor3 = Color3.fromRGB(99, 134, 59);
+                        ImageColor3 = Color3.fromRGB(255,255,255);
 
                         [Fusion.Children] = {
                             scope:New "UIAspectRatioConstraint" {AspectRatio = 1}
@@ -73,13 +64,14 @@ local function renderOpenButton(
                         Name = "Shadow";
                         AnchorPoint = Vector2.new(.5, .5);
                         Position = UDim2.fromScale(.5, .5);
-                        Size = UDim2.new(1, 60, 1, 60);
+                        Size = UDim2.new(1, 45, 1, 45);
                         BackgroundTransparency = 1;
+                        ZIndex = -10;
                         
                         ImageTransparency = scope:Spring(scope:Computed(function(use)
-                            return if use(isHovering) then 0.5 else 1
+                            return if use(isHovering) then 0.7 else 1
                         end), 30, 1);
-                        ImageColor3 = Color3.fromRGB(74, 114, 28);
+                        ImageColor3 = Color3.fromRGB(81, 27, 143);
                         Image = "rbxassetid://6150493168";
                         ScaleType = Enum.ScaleType.Slice;
                         SliceCenter = Rect.new(100,100,100,100);
@@ -88,6 +80,10 @@ local function renderOpenButton(
                 }
             })
         };
+
+        [Fusion.OnEvent 'Activated'] = function()
+            props.isActive:set(not scope.peek(props.isActive))
+        end;
 
         [Fusion.OnEvent "MouseButton1Down"] = function()
             isHeldDown:set(true)
